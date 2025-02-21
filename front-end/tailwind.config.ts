@@ -8,29 +8,33 @@ export default {
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
     "./node_modules/@heroui/theme/dist/components/(button|card|input|ripple|spinner|form).js"
   ],
+  darkMode: 'class',
   theme: {
     extend: {
       colors: {
         // WHITES
-        'light-white': '#F8F8F8',
         'white': '#FFFFFF',
         'off-white': '#F1F1F1',
         // GRAYS
-        'light-gray': '#D1D5DB',
+        'tint-gray': '#D1D5DB',
         'gray': '#6B7280',
-        'dark-gray': '#374151',
+        'shade-gray': '#1F232B',
         // BLACKS
-        'light-black': '#1F2937',
+        'tint-black': '#1F2937',
         'black': '#000000',
-        'dark-black': '#111827',
+        'shade-black': '#111827',
         // PRIMARY COLOR BLUE
-        'light-blue': '#BFDBFE',
+        'tint-blue': '#BFDBFE',
         'primary': '#3B82F6', // blue
-        'dark-blue': '#1D4ED8',
+        'shade-blue': '#1D4ED8',
         // COMPLEMENTARY COLOR ORANGE
-        'light-orange': '#FF6F00',
+        'tint-orange': '#FF6F00',
         'secondary': '#FF5722', //orange
-        'dark-orange': '#FF3D00',
+        'shade-orange': '#FF3D00',
+      },
+      boxShadow: {
+        'dark': '0px 4px 6px rgba(31, 41, 55, 0.15)', // dark shadow color
+        'light': '0px 4px 6px rgba(255, 255, 255, 0.2)', // light shadow color
       },
     },
   },

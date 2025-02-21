@@ -4,6 +4,7 @@ import { EyeIcon, EyeOffIcon } from "lucide-react";
 import { Card, CardBody, CardHeader } from "@heroui/card";
 import { Input } from "@heroui/input";
 import { Button } from "@heroui/button";
+import { useTheme } from "next-themes";
 
 const options: { text: string; value: number[] }[] = [
   { text: "1 ou 2", value: [1, 2] },
@@ -15,6 +16,7 @@ const options: { text: string; value: number[] }[] = [
 ];
 
 export default function VirtualKeyboard() {
+  const { theme } = useTheme();
   const [selectedOptions, setSelectedOptions] = useState<number[][]>([]);
   const [showPassword, setShowPassword] = useState(false);
 
@@ -27,13 +29,11 @@ export default function VirtualKeyboard() {
   };
 
   const getOptions = () => {
-    if (options.length === 0) [];
-
     return options.map(({ text, value }) => (
       <Button
         key={text}
         onPress={() => handleSelect(value)}
-        className="p-3 rounded-lg bg-light-blue text-dark-black text-lg font-semibold hover:bg-blue"
+        className="p-3 rounded-lg bg-tint-blue dark:bg-primary text-shade-black text-lg font-semibold hover:bg-shade-blue"
         disableRipple={true}
       >
         {text}
@@ -42,10 +42,10 @@ export default function VirtualKeyboard() {
   };
 
   return (
-    <div className="flex h-screen items-center justify-center bg-light-white">
-      <Card className="p-6 rounded-2xl shadow-lg bg-white w-96 text-center">
+    <div className="flex h-screen items-center justify-center bg-off-white dark:bg-shade-gray">
+      <Card className="p-6 rounded-2xl shadow-lg bg-white dark:bg-shade-black w-96 text-center">
         <CardHeader className="flex justify-center mb-4">
-          <h2 className="text-2xl font-semibold text-dark-black">Virtual Keyboard</h2>
+          <h2 className="text-2xl font-semibold dark:text-tint-gray text-shade-gray">Virtual Keyboard</h2>
         </CardHeader>
         <CardBody>
           <div className="relative mb-4 flex items-center">
@@ -53,7 +53,7 @@ export default function VirtualKeyboard() {
               type={showPassword ? "text" : "password"}
               value={selectedOptions?.map(op => op.map(String).join("")).join(" ")}
               readOnly
-              className="w-full p-2 rounded text-dark-black text-lg"
+              className="w-full p-2 rounded text-shade-gray text-lg"
             />
             <Button
               onPress={togglePasswordVisibility}
@@ -72,12 +72,12 @@ export default function VirtualKeyboard() {
               onPress={() => setSelectedOptions([])}
               className="w-full p-3 rounded-lg text-lg font-semibold"
               variant="ghost"
-              color="secondary"
+              color={theme !== 'dark' ? "secondary" : "danger"}
             >
               Limpar
             </Button>
             <Button
-              className="w-full p-3 rounded-lg bg-dark-blue text-white text-lg font-semibold hover:bg-blue"
+              className="w-full p-3 rounded-lg bg-primary dark:bg-shade-blue text-white text-lg font-semibold hover:bg-shade-blue"
               onPress={() => alert("Acesso liberado!")}
             >
               Acessar
