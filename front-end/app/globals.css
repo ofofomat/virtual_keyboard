@@ -9,3 +9,8 @@ html {
 html.dark {
   @apply bg-tint-black text-off-white;
 }
+
+body {
+  margin: 0 !important;
+  padding: 0 !important;
+}

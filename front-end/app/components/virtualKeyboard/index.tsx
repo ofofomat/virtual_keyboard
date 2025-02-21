@@ -33,8 +33,10 @@ export default function VirtualKeyboard() {
       <Button
         key={text}
         onPress={() => handleSelect(value)}
-        className="p-3 rounded-lg bg-tint-blue dark:bg-primary text-shade-black text-lg font-semibold hover:bg-shade-blue"
+        className="p-3 rounded-lg text-lg font-semibold"
         disableRipple={true}
+        color="primary"
+        variant="flat"
       >
         {text}
       </Button>
@@ -42,7 +44,7 @@ export default function VirtualKeyboard() {
   };
 
   return (
-    <div className="flex h-screen items-center justify-center bg-off-white dark:bg-shade-gray">
+    <div className="flex h-screen items-center justify-center bg-off-white dark:bg-shade-gray w-full">
       <Card className="p-6 rounded-2xl shadow-lg bg-white dark:bg-shade-black w-96 text-center">
         <CardHeader className="flex justify-center mb-4">
           <h2 className="text-2xl font-semibold dark:text-tint-gray text-shade-gray">Virtual Keyboard</h2>
@@ -72,13 +74,15 @@ export default function VirtualKeyboard() {
               onPress={() => setSelectedOptions([])}
               className="w-full p-3 rounded-lg text-lg font-semibold"
               variant="ghost"
-              color={theme !== 'dark' ? "secondary" : "danger"}
+              color="secondary"
             >
               Limpar
             </Button>
             <Button
-              className="w-full p-3 rounded-lg bg-primary dark:bg-shade-blue text-white text-lg font-semibold hover:bg-shade-blue"
+              className="w-full p-3 rounded-lg text-lg font-semibold"
               onPress={() => alert("Acesso liberado!")}
+              variant="solid"
+              color="primary"
             >
               Acessar
             </Button>
