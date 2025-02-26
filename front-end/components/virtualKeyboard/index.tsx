@@ -1,6 +1,6 @@
 'use client';
 import { useState } from "react";
-import { EyeIcon, EyeOffIcon } from "lucide-react";
+import { EyeIcon, EyeOffIcon, Trash2 } from "lucide-react";
 import { Card, CardBody, CardHeader } from "@heroui/card";
 import { Input } from "@heroui/input";
 import { Button } from "@heroui/button";
@@ -11,12 +11,11 @@ const options: { text: string; value: number[] }[] = [
   { text: "2 ou 3", value: [2, 3] },
   { text: "3 ou 4", value: [3, 4] },
   { text: "4 ou 5", value: [4, 5] },
-  { text: "5 ou 6", value: [5, 6] },
-  { text: "6 ou 1", value: [6, 1] }
+  { text: "5 ou 6", value: [5, 6] }
 ];
 
 export default function VirtualKeyboard() {
-  const { theme } = useTheme();
+  const theme = useTheme();
   const [selectedOptions, setSelectedOptions] = useState<number[][]>([]);
   const [showPassword, setShowPassword] = useState(false);
 
@@ -68,16 +67,16 @@ export default function VirtualKeyboard() {
           </div>
           <div className="grid grid-cols-3 gap-2 mb-4">
             {getOptions()}
-          </div>
-          <div className="flex justify-between space-x-2">
             <Button
               onPress={() => setSelectedOptions([])}
               className="w-full p-3 rounded-lg text-lg font-semibold"
-              variant="ghost"
+              variant="flat"
               color="secondary"
             >
-              Limpar
+              <Trash2 size={24} className="text-secondary" />
             </Button>
+          </div>
+          <div className="flex w-full">
             <Button
               className="w-full p-3 rounded-lg text-lg font-semibold"
               onPress={() => alert("Acesso liberado!")}
