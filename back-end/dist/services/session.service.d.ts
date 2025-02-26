@@ -1,5 +1,5 @@
 import { Repository } from 'typeorm';
-import { Session } from './session.entity';
+import { Session } from '../entities/session.entity';
 export declare class SessionService {
     private readonly sessionRepository;
     constructor(sessionRepository: Repository<Session>);

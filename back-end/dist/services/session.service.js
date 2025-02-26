@@ -16,7 +16,7 @@ exports.SessionService = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
-const session_entity_1 = require("./session.entity");
+const session_entity_1 = require("../entities/session.entity");
 let SessionService = class SessionService {
     sessionRepository;
     constructor(sessionRepository) {
