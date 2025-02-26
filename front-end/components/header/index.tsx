@@ -2,10 +2,8 @@
 
 import { Button } from "@heroui/button";
 import ThemeToggle from "./themeToggle";
-import { useTheme } from "next-themes";
 
 export default function Header() {
-  const { theme } = useTheme();
   return (
     <header className="flex justify-between items-center p-4 bg-light-white dark:bg-dark-black">
       <h1 className="text-blue dark:text-light-blue">V-KeyBoard</h1>

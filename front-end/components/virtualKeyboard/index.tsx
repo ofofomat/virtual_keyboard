@@ -4,7 +4,6 @@ import { EyeIcon, EyeOffIcon, Trash2 } from "lucide-react";
 import { Card, CardBody, CardHeader } from "@heroui/card";
 import { Input } from "@heroui/input";
 import { Button } from "@heroui/button";
-import { useTheme } from "next-themes";
 
 const options: { text: string; value: number[] }[] = [
   { text: "1 ou 2", value: [1, 2] },
@@ -15,7 +14,6 @@ const options: { text: string; value: number[] }[] = [
 ];
 
 export default function VirtualKeyboard() {
-  const theme = useTheme();
   const [selectedOptions, setSelectedOptions] = useState<number[][]>([]);
   const [showPassword, setShowPassword] = useState(false);
 
