@@ -3,10 +3,10 @@ import { Entity, Column, PrimaryColumn, CreateDateColumn } from 'typeorm';
 @Entity()
 export class Session {
   @PrimaryColumn()
-  id: string; // The unique hash
+  id: string;
 
-  @Column('text')
-  keyboard_layout: string; // JSON stored as text
+  @Column({ type: 'text', unique: true })
+  keyboard_hash: string;
 
   @CreateDateColumn()
   created_at: Date;
