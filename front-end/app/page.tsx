@@ -1,6 +1,5 @@
 'use client'
-import Header from "../components/header";
-import VirtualKeyboard from "../components/virtualKeyboard";
+import { VirtualKeyboard, Header } from "@/components";
 
 export default function Home() {
   return (
