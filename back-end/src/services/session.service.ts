@@ -14,12 +14,14 @@ export class SessionService {
     private readonly sessionRepository: Repository<Session>,
   ) {}
 
-  async createSession(): Promise<{ sessionId: string; keyboard: KeyboardDTO[] }> {
+  async createSession(username: string): Promise<{ sessionId: string; keyboard: KeyboardDTO[] }> {
+    const hasSessionActive = await this.sessionRepository.findOneBy({username: username, is_active: true});
+    if (hasSessionActive) await this.sessionRepository.update(hasSessionActive.id, {is_active: false})
+
     const keyboardLayout = generateKeyboardLayout();
     const keyboardHash = generateKeyboardHash(keyboardLayout);
     const sessionId = uuidv4();
-
-    await this.sessionRepository.save({ id: sessionId, keyboard_hash: keyboardHash });
+    await this.sessionRepository.save({ id: sessionId, keyboard_hash: keyboardHash, username });
 
     const keyboard = keyboardLayout.map(pair => ({
       text: `${pair[0]} ou ${pair[1]}`,

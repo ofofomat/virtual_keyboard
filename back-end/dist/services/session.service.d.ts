@@ -5,7 +5,7 @@ import { LoginUserDTO } from 'src/dtos/loginUser.dto';
 export declare class SessionService {
     private readonly sessionRepository;
     constructor(sessionRepository: Repository<Session>);
-    createSession(): Promise<{
+    createSession(username: string): Promise<{
         sessionId: string;
         keyboard: KeyboardDTO[];
     }>;

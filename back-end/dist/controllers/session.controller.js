@@ -20,8 +20,8 @@ let SessionController = class SessionController {
     constructor(sessionService) {
         this.sessionService = sessionService;
     }
-    async startSession() {
-        return await this.sessionService.createSession();
+    async startSession(username) {
+        return await this.sessionService.createSession(username);
     }
     async invalidateSession(sessionId) {
         await this.sessionService.invalidateSession(sessionId);
@@ -31,8 +31,9 @@ let SessionController = class SessionController {
 exports.SessionController = SessionController;
 __decorate([
     (0, common_1.Get)('start'),
+    __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], SessionController.prototype, "startSession", null);
 __decorate([
