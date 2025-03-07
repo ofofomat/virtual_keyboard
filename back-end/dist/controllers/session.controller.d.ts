@@ -6,7 +6,4 @@ export declare class SessionController {
         sessionId: string;
         keyboard: import("../dtos").KeyboardDTO[];
     }>;
-    invalidateSession(sessionId: string): Promise<{
-        message: string;
-    }>;
 }
