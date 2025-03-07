@@ -9,32 +9,23 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Session = void 0;
-const typeorm_1 = require("typeorm");
-let Session = class Session {
-    id;
-    keyboard_hash;
-    created_at;
-    is_active;
-};
-exports.Session = Session;
+exports.KeyboardDTO = void 0;
+const class_validator_1 = require("class-validator");
+class KeyboardDTO {
+    text;
+    value;
+}
+exports.KeyboardDTO = KeyboardDTO;
 __decorate([
-    (0, typeorm_1.PrimaryColumn)(),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
-], Session.prototype, "id", void 0);
+], KeyboardDTO.prototype, "text", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'text', unique: true }),
-    __metadata("design:type", String)
-], Session.prototype, "keyboard_hash", void 0);
-__decorate([
-    (0, typeorm_1.CreateDateColumn)(),
-    __metadata("design:type", Date)
-], Session.prototype, "created_at", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ default: true }),
-    __metadata("design:type", Boolean)
-], Session.prototype, "is_active", void 0);
-exports.Session = Session = __decorate([
-    (0, typeorm_1.Entity)()
-], Session);
-//# sourceMappingURL=session.entity.js.map
+    (0, class_validator_1.IsArray)(),
+    (0, class_validator_1.ArrayMinSize)(2),
+    (0, class_validator_1.ArrayMaxSize)(2),
+    __metadata("design:type", Array)
+], KeyboardDTO.prototype, "value", void 0);
+;
+//# sourceMappingURL=keyboard.dto.js.map

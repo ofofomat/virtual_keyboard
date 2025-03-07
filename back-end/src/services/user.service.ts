@@ -3,11 +3,14 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from 'src/entities';
 import { CreateUserDto } from 'src/dtos';
+import { LoginUserDTO } from 'src/dtos/loginUser.dto';
+import { SessionService } from './session.service';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User) private readonly userRepository: Repository<User>,
+    private readonly sessionService: SessionService,
   ) {}
   private readonly logger = new Logger(UserService.name);
 
@@ -42,6 +45,22 @@ export class UserService {
 
   async getUser(username: string): Promise<User | null> {
     return await this.userRepository.findOneBy({username});
+  }
+
+  async login({sessionId, username, passwordTyped}: LoginUserDTO){
+    try {
+      const isValid = await this.sessionService.validateLoginAttempt({ sessionId, passwordTyped });
+      if (!isValid) return null;
+      
+      const user = await this.getUser(username); 
+      if (!user) {
+        throw new Error("User not found");
+      }
+      return user;
+    } catch (e) {
+      await this.sessionService.invalidateSession(sessionId);
+      console.error(e);
+    }
   }
 }
 

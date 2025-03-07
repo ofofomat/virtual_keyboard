@@ -17,11 +17,14 @@ exports.UserService = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
-const user_entity_1 = require("../entities/user.entity");
+const entities_1 = require("../entities");
+const session_service_1 = require("./session.service");
 let UserService = UserService_1 = class UserService {
     userRepository;
-    constructor(userRepository) {
+    sessionService;
+    constructor(userRepository, sessionService) {
         this.userRepository = userRepository;
+        this.sessionService = sessionService;
     }
     logger = new common_1.Logger(UserService_1.name);
     async onModuleInit() {
@@ -51,11 +54,28 @@ let UserService = UserService_1 = class UserService {
     async getUser(username) {
         return await this.userRepository.findOneBy({ username });
     }
+    async login({ sessionId, username, passwordTyped }) {
+        try {
+            const isValid = await this.sessionService.validateLoginAttempt({ sessionId, passwordTyped });
+            if (!isValid)
+                return null;
+            const user = await this.getUser(username);
+            if (!user) {
+                throw new Error("User not found");
+            }
+            return user;
+        }
+        catch (e) {
+            await this.sessionService.invalidateSession(sessionId);
+            console.error(e);
+        }
+    }
 };
 exports.UserService = UserService;
 exports.UserService = UserService = UserService_1 = __decorate([
     (0, common_1.Injectable)(),
-    __param(0, (0, typeorm_1.InjectRepository)(user_entity_1.User)),
-    __metadata("design:paramtypes", [typeorm_2.Repository])
+    __param(0, (0, typeorm_1.InjectRepository)(entities_1.User)),
+    __metadata("design:paramtypes", [typeorm_2.Repository,
+        session_service_1.SessionService])
 ], UserService);
 //# sourceMappingURL=user.service.js.map

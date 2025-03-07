@@ -9,9 +9,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
-const index_1 = require("./entities/index");
-const index_2 = require("./services/index");
-const index_3 = require("./controllers/index");
+const entities_1 = require("./entities");
+const services_1 = require("./services");
+const controllers_1 = require("./controllers");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -21,13 +21,13 @@ exports.AppModule = AppModule = __decorate([
             typeorm_1.TypeOrmModule.forRoot({
                 type: 'sqlite',
                 database: 'database.db',
-                entities: [index_1.Session, index_1.User],
+                entities: [entities_1.Session, entities_1.User],
                 synchronize: true,
             }),
-            typeorm_1.TypeOrmModule.forFeature([index_1.Session, index_1.User]),
+            typeorm_1.TypeOrmModule.forFeature([entities_1.Session, entities_1.User]),
         ],
-        controllers: [index_3.SessionController, index_3.UserController],
-        providers: [index_2.SessionService, index_2.UserService],
+        controllers: [controllers_1.SessionController, controllers_1.UserController],
+        providers: [services_1.SessionService, services_1.UserService],
     })
 ], AppModule);
 //# sourceMappingURL=app.module.js.map

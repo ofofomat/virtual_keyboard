@@ -1,11 +1,15 @@
 import { Repository } from 'typeorm';
-import { User } from '../entities/user.entity';
-import { CreateUserDto } from 'src/dtos/createUser.dto';
+import { User } from 'src/entities';
+import { CreateUserDto } from 'src/dtos';
+import { LoginUserDTO } from 'src/dtos/loginUser.dto';
+import { SessionService } from './session.service';
 export declare class UserService {
     private readonly userRepository;
-    constructor(userRepository: Repository<User>);
+    private readonly sessionService;
+    constructor(userRepository: Repository<User>, sessionService: SessionService);
     private readonly logger;
     onModuleInit(): Promise<void>;
     createUser(createUserDto: CreateUserDto): Promise<User>;
     getUser(username: string): Promise<User | null>;
+    login({ sessionId, username, passwordTyped }: LoginUserDTO): Promise<User | null | undefined>;
 }

@@ -1,4 +1,4 @@
-import crypto from 'crypto';
+import * as crypto from 'crypto';
 
 /**
  * Generates a random keyboard layout with 5 unique pairs of numbers (0-9).

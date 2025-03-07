@@ -1,21 +1,47 @@
 'use client';
 import { useState } from "react";
+import { useSession } from "@/auth/useSession";
 import { EyeIcon, EyeOffIcon, Trash2 } from "lucide-react";
 import { Card, CardBody, CardHeader } from "@heroui/card";
 import { Input } from "@heroui/input";
 import { Button } from "@heroui/button";
 
-const options: { text: string; value: number[] }[] = [
-  { text: "1 ou 2", value: [1, 2] },
-  { text: "2 ou 3", value: [2, 3] },
-  { text: "3 ou 4", value: [3, 4] },
-  { text: "4 ou 5", value: [4, 5] },
-  { text: "5 ou 6", value: [5, 6] }
-];
-
 export default function VirtualKeyboard() {
+  const { sessionId, invalidateSession } = useSession();
+
+  const keyboard = [
+    {
+      "text": "3 ou 5",
+      "value": [3, 5]
+    },
+    {
+      "text": "1 ou 6",
+      "value": [1, 6]
+    },
+    {
+      "text": "4 ou 8",
+      "value": [4, 8]
+    },
+    {
+      "text": "2 ou 7",
+      "value": [2, 7]
+    },
+    {
+      "text": "0 ou 9",
+      "value": [0, 9]
+    }
+  ]
+
   const [selectedOptions, setSelectedOptions] = useState<number[][]>([]);
   const [showPassword, setShowPassword] = useState(false);
+
+  const logIn = async () => {
+    try {
+
+    } catch (e) {
+
+    }
+  };
 
   const handleSelect = (value: number[]) => {
     setSelectedOptions((prev) => [...prev, value]);
@@ -26,7 +52,7 @@ export default function VirtualKeyboard() {
   };
 
   const getOptions = () => {
-    return options.map(({ text, value }) => (
+    return keyboard?.map(({ text, value }) => (
       <Button
         key={text}
         onPress={() => handleSelect(value)}
@@ -77,7 +103,7 @@ export default function VirtualKeyboard() {
           <div className="flex w-full">
             <Button
               className="w-full p-3 rounded-lg text-lg font-semibold"
-              onPress={() => alert("Acesso liberado!")}
+              onPress={logIn}
               variant="solid"
               color="primary"
             >

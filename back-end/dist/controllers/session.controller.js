@@ -8,19 +8,42 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SessionController = void 0;
 const common_1 = require("@nestjs/common");
-const index_1 = require("../services/index");
+const services_1 = require("../services");
 let SessionController = class SessionController {
     sessionService;
     constructor(sessionService) {
         this.sessionService = sessionService;
     }
+    async startSession() {
+        return await this.sessionService.createSession();
+    }
+    async invalidateSession(sessionId) {
+        await this.sessionService.invalidateSession(sessionId);
+        return { message: 'Session invalidated' };
+    }
 };
 exports.SessionController = SessionController;
+__decorate([
+    (0, common_1.Get)('start'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], SessionController.prototype, "startSession", null);
+__decorate([
+    (0, common_1.Post)('invalidate/:sessionId'),
+    __param(0, (0, common_1.Param)('sessionId')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], SessionController.prototype, "invalidateSession", null);
 exports.SessionController = SessionController = __decorate([
-    (0, common_1.Controller)(),
-    __metadata("design:paramtypes", [index_1.SessionService])
+    (0, common_1.Controller)('session'),
+    __metadata("design:paramtypes", [services_1.SessionService])
 ], SessionController);
 //# sourceMappingURL=session.controller.js.map

@@ -14,8 +14,9 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserController = void 0;
 const common_1 = require("@nestjs/common");
-const index_1 = require("../services/index");
-const createUser_dto_1 = require("../dtos/createUser.dto");
+const services_1 = require("../services");
+const dtos_1 = require("../dtos");
+const loginUser_dto_1 = require("../dtos/loginUser.dto");
 let UserController = class UserController {
     userService;
     constructor(userService) {
@@ -27,13 +28,20 @@ let UserController = class UserController {
     async getUser(username) {
         return await this.userService.getUser(username);
     }
+    async login({ sessionId, username, passwordTyped }) {
+        const response = await this.userService.login({ sessionId, username, passwordTyped });
+        if (response === null) {
+            throw new common_1.HttpException("Senhas não são iguais", common_1.HttpStatus.BAD_REQUEST);
+        }
+        return response;
+    }
 };
 exports.UserController = UserController;
 __decorate([
     (0, common_1.Post)(),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [createUser_dto_1.CreateUserDto]),
+    __metadata("design:paramtypes", [dtos_1.CreateUserDto]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "createUser", null);
 __decorate([
@@ -43,8 +51,15 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "getUser", null);
+__decorate([
+    (0, common_1.Post)('login'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [loginUser_dto_1.LoginUserDTO]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "login", null);
 exports.UserController = UserController = __decorate([
     (0, common_1.Controller)('users'),
-    __metadata("design:paramtypes", [index_1.UserService])
+    __metadata("design:paramtypes", [services_1.UserService])
 ], UserController);
 //# sourceMappingURL=user.controller.js.map
