@@ -24,17 +24,5 @@ export function useSession() {
     }
   }
 
-  async function invalidateSession() {
-    if (!sessionId) return;
-    
-    try {
-      await fetch(`https://localhost:9000/session/invalidate/${sessionId}`, { method: 'POST' });
-      setSessionId(null);
-      setKeyboard(null);
-    } catch (error) {
-      console.error('Error invalidating session:', error);
-    }
-  }
-
-  return { sessionId, keyboard, invalidateSession };
+  return { sessionId, keyboard };
 }

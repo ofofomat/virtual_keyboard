@@ -7,7 +7,7 @@ import { Input } from "@heroui/input";
 import { Button } from "@heroui/button";
 
 export default function VirtualKeyboard() {
-  const { sessionId, invalidateSession } = useSession();
+  const { sessionId } = useSession();
 
   const keyboard = [
     {
