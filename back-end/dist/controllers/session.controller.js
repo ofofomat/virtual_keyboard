@@ -20,18 +20,27 @@ let SessionController = class SessionController {
     constructor(sessionService) {
         this.sessionService = sessionService;
     }
-    async startSession(username) {
-        return await this.sessionService.createSession(username);
+    async startSession() {
+        return await this.sessionService.createSession();
+    }
+    async invalidateSession(sessionId) {
+        return await this.sessionService.invalidateSession(sessionId);
     }
 };
 exports.SessionController = SessionController;
 __decorate([
-    (0, common_1.Get)('start'),
-    __param(0, (0, common_1.Body)()),
+    (0, common_1.Post)('start'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], SessionController.prototype, "startSession", null);
+__decorate([
+    (0, common_1.Post)('invalidate'),
+    __param(0, (0, common_1.Body)('sessionId')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
-], SessionController.prototype, "startSession", null);
+], SessionController.prototype, "invalidateSession", null);
 exports.SessionController = SessionController = __decorate([
     (0, common_1.Controller)('session'),
     __metadata("design:paramtypes", [services_1.SessionService])

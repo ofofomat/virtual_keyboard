@@ -34,21 +34,13 @@ let UserService = UserService_1 = class UserService {
             await this.createUser({
                 username: 'mock_user',
                 name: 'Mock User',
-                password: [
-                    { numbers: [4, 6] },
-                    { numbers: [7, 0] },
-                    { numbers: [1, 5] },
-                    { numbers: [8, 9] },
-                    { numbers: [3, 2] },
-                    { numbers: [4, 2] }
-                ],
+                password: [4, 6, 7, 3, 4, 9],
             });
         }
     }
     async createUser(createUserDto) {
         const { username, name, password } = createUserDto;
-        const formattedPassword = password.map(pair => pair.numbers);
-        const user = this.userRepository.create({ username, name, password: formattedPassword });
+        const user = this.userRepository.create({ username, name, password });
         return await this.userRepository.save(user);
     }
     async getUser(username) {
@@ -60,6 +52,13 @@ let UserService = UserService_1 = class UserService {
             if (!isValid)
                 return null;
             const user = await this.getUser(username);
+            if (user === null)
+                return null;
+            passwordTyped.forEach((val, i) => {
+                if (!val.some(v => v === user.password[i])) {
+                    throw new Error("Invalid password");
+                }
+            });
             if (!user) {
                 throw new Error("User not found");
             }

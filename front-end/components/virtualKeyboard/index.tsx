@@ -1,48 +1,105 @@
 'use client';
-import { useState } from "react";
-import { useSession } from "@/auth/useSession";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { EyeIcon, EyeOffIcon, Trash2 } from "lucide-react";
 import { Card, CardBody, CardHeader } from "@heroui/card";
 import { Input } from "@heroui/input";
 import { Button } from "@heroui/button";
 
 export default function VirtualKeyboard() {
-  const { sessionId } = useSession();
-
-  const keyboard = [
-    {
-      "text": "3 ou 5",
-      "value": [3, 5]
-    },
-    {
-      "text": "1 ou 6",
-      "value": [1, 6]
-    },
-    {
-      "text": "4 ou 8",
-      "value": [4, 8]
-    },
-    {
-      "text": "2 ou 7",
-      "value": [2, 7]
-    },
-    {
-      "text": "0 ou 9",
-      "value": [0, 9]
-    }
-  ]
-
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
+  const [keyboard, setKeyboard] = useState<{ text: string; value: number[] }[]>();
+  const [sessionId, setSessionId] = useState<string>();
   const [selectedOptions, setSelectedOptions] = useState<number[][]>([]);
-  const [showPassword, setShowPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [username, setUsername] = useState<string>("");
+  const [name, setName] = useState<string>();
+  const hasFetched = useRef<boolean>(false);
 
-  const logIn = async () => {
+  async function startSession(): Promise<{ sessionId: string; keyboard: { text: string; value: number[] }[] }> {
+    const response = await fetch('http://localhost:7575/session/start', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+    });
+
+    if (!response.ok) throw new Error('Failed to start session');
+
+    return await response.json();
+  }
+
+  const getSession = async () => {
     try {
-
-    } catch (e) {
-
+      const { sessionId, keyboard } = await startSession();
+      setSessionId(sessionId);
+      setKeyboard(keyboard);
+    } catch (error) {
+      console.error(error);
     }
   };
 
+  const invalidateSession = async () => {
+    try {
+      if (!sessionId) return;
+      const response = await fetch('http://localhost:7575/session/invalidate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ sessionId }),
+      });
+
+      if (!response.ok) throw new Error('Failed to invalidate session');
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  useEffect(() => {
+    if (!hasFetched.current) {
+      hasFetched.current = true;
+      getSession();
+    }
+  }, []);
+
+  const logIn = useCallback(async () => {
+    if (isLoggingIn) return; // Prevent multiple calls
+    setIsLoggingIn(true);
+  
+    try {
+      if (!username) {
+        alert("Please enter your username.");
+        return;
+      }
+      if (!sessionId) {
+        alert("Session not initialized.");
+        invalidateSession();
+        getSession();
+        return;
+      }
+  
+      const passwordTyped = selectedOptions;
+      const response = await fetch('http://localhost:7575/users/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, sessionId, passwordTyped}),
+      });
+  
+      if (!response.ok) {
+        invalidateSession();
+        getSession();
+        throw new Error("Login failed");
+      }
+  
+      const { name } = await response.json();
+      setName(name);
+      alert("Login successful!");
+    } catch (e) {
+      console.error(e);
+      invalidateSession();
+      getSession();
+      alert("Login error. Please try again.");
+    } finally {
+      setIsLoggingIn(false);
+    }
+  }, [username, sessionId, selectedOptions, isLoggingIn]);
+  
   const handleSelect = (value: number[]) => {
     setSelectedOptions((prev) => [...prev, value]);
   };
@@ -67,12 +124,26 @@ export default function VirtualKeyboard() {
   };
 
   return (
-    <div className="flex h-screen items-center justify-center bg-off-white dark:bg-shade-gray w-full">
+    <div className="flex h-screen items-center justify-center bg-off-white dark:bg-shade-gray w-full flex-col gap-8">
+      {name && (
+        <div className="absolute top-0 right-0 p-4">
+          <span className="text-sm text-gray dark:text-tint-gray">Logged as {name}</span>
+        </div>
+      )}
       <Card className="p-6 rounded-2xl shadow-lg bg-white dark:bg-shade-black w-96 text-center">
         <CardHeader className="flex justify-center mb-4">
           <h2 className="text-2xl font-semibold dark:text-tint-gray text-shade-gray">Virtual Keyboard</h2>
         </CardHeader>
         <CardBody>
+          <div className="relative mb-4 flex items-center">
+            <Input
+              type="text"
+              placeholder="Username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              className="w-full p-2 rounded text-shade-gray text-lg"
+            />
+          </div>
           <div className="relative mb-4 flex items-center">
             <Input
               type={showPassword ? "text" : "password"}

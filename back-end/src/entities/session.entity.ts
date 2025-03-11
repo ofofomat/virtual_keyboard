@@ -5,9 +5,6 @@ export class Session {
   @PrimaryColumn()
   id: string;
 
-  @Column({type: 'text'})
-  username: string;
-
   @Column({ type: 'text', unique: true })
   keyboard_hash: string;
 

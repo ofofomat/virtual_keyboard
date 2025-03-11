@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Session } from 'src/entities';
@@ -14,14 +14,14 @@ export class SessionService {
     private readonly sessionRepository: Repository<Session>,
   ) {}
 
-  async createSession(username: string): Promise<{ sessionId: string; keyboard: KeyboardDTO[] }> {
-    const hasSessionActive = await this.sessionRepository.findOneBy({username: username, is_active: true});
-    if (hasSessionActive) await this.sessionRepository.update(hasSessionActive.id, {is_active: false})
-
+  async createSession(): Promise<{ sessionId: string; keyboard: KeyboardDTO[] }> {
     const keyboardLayout = generateKeyboardLayout();
     const keyboardHash = generateKeyboardHash(keyboardLayout);
     const sessionId = uuidv4();
-    await this.sessionRepository.save({ id: sessionId, keyboard_hash: keyboardHash, username });
+    await this.sessionRepository.save({ 
+      id: sessionId, 
+      keyboard_hash: keyboardHash
+    });
 
     const keyboard = keyboardLayout.map(pair => ({
       text: `${pair[0]} ou ${pair[1]}`,
@@ -40,7 +40,7 @@ export class SessionService {
     if (session == null) {
       throw new Error("ID de sessão inválida!");
     }
-  
+    Logger.debug(`Password typed: ${passwordTyped}`);
     const receivedHash = generateKeyboardHash(passwordTyped);
     return receivedHash === session.keyboard_hash;
   }

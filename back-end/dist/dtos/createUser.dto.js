@@ -11,16 +11,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CreateUserDto = void 0;
 const class_validator_1 = require("class-validator");
-const class_transformer_1 = require("class-transformer");
-class PasswordPairDto {
-    numbers;
-}
-__decorate([
-    (0, class_validator_1.IsArray)(),
-    (0, class_validator_1.ArrayMinSize)(2),
-    (0, class_validator_1.ArrayMaxSize)(2),
-    __metadata("design:type", Array)
-], PasswordPairDto.prototype, "numbers", void 0);
 class CreateUserDto {
     username;
     name;
@@ -41,8 +31,6 @@ __decorate([
     (0, class_validator_1.IsArray)(),
     (0, class_validator_1.ArrayMinSize)(6),
     (0, class_validator_1.ArrayMaxSize)(6),
-    (0, class_validator_1.ValidateNested)({ each: true }),
-    (0, class_transformer_1.Type)(() => PasswordPairDto),
     __metadata("design:type", Array)
 ], CreateUserDto.prototype, "password", void 0);
 //# sourceMappingURL=createUser.dto.js.map

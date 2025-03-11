@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpException, HttpStatus, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, HttpException, HttpStatus, Logger, Param, Post } from '@nestjs/common';
 import { UserService } from 'src/services';
 import { CreateUserDto } from 'src/dtos';
 import { User } from 'src/entities';
@@ -23,6 +23,7 @@ export class UserController {
     const response = await this.userService.login({ sessionId, username, passwordTyped });
     
     if (response === null) {
+      Logger.error(`Usuário não encontrado para dados fornecidos: ${username}, ${passwordTyped}` );
       throw new HttpException("Senhas não são iguais", HttpStatus.BAD_REQUEST);
     }
     

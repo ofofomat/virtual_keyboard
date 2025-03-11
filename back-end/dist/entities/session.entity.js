@@ -13,7 +13,6 @@ exports.Session = void 0;
 const typeorm_1 = require("typeorm");
 let Session = class Session {
     id;
-    username;
     keyboard_hash;
     created_at;
     is_active;
@@ -23,10 +22,6 @@ __decorate([
     (0, typeorm_1.PrimaryColumn)(),
     __metadata("design:type", String)
 ], Session.prototype, "id", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ type: 'text' }),
-    __metadata("design:type", String)
-], Session.prototype, "username", void 0);
 __decorate([
     (0, typeorm_1.Column)({ type: 'text', unique: true }),
     __metadata("design:type", String)

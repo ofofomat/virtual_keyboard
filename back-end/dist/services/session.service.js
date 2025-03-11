@@ -24,14 +24,14 @@ let SessionService = class SessionService {
     constructor(sessionRepository) {
         this.sessionRepository = sessionRepository;
     }
-    async createSession(username) {
-        const hasSessionActive = await this.sessionRepository.findOneBy({ username: username, is_active: true });
-        if (hasSessionActive)
-            await this.sessionRepository.update(hasSessionActive.id, { is_active: false });
+    async createSession() {
         const keyboardLayout = (0, func_1.generateKeyboardLayout)();
         const keyboardHash = (0, func_1.generateKeyboardHash)(keyboardLayout);
         const sessionId = (0, uuid_1.v4)();
-        await this.sessionRepository.save({ id: sessionId, keyboard_hash: keyboardHash, username });
+        await this.sessionRepository.save({
+            id: sessionId,
+            keyboard_hash: keyboardHash
+        });
         const keyboard = keyboardLayout.map(pair => ({
             text: `${pair[0]} ou ${pair[1]}`,
             value: pair,
@@ -46,6 +46,7 @@ let SessionService = class SessionService {
         if (session == null) {
             throw new Error("ID de sessão inválida!");
         }
+        common_1.Logger.debug(`Password typed: ${passwordTyped}`);
         const receivedHash = (0, func_1.generateKeyboardHash)(passwordTyped);
         return receivedHash === session.keyboard_hash;
     }

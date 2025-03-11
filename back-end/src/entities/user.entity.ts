@@ -17,5 +17,5 @@ export class User {
       from: (value: string) => JSON.parse(value) as number[][],
     },
   })
-  password: number[][];
+  password: number[];
 }
