@@ -26,9 +26,7 @@ export function generateKeyboardLayout(): number[][] {
  * @returns {string} A SHA-256 hash of the sorted layout
  */
 export function generateKeyboardHash(keyboardLayout: number[][]): string {
-    const sortedLayout = keyboardLayout.map(pair => pair.sort((a, b) => a - b)).sort();
-    
-    const layoutString = JSON.stringify(sortedLayout);
+    const layoutString = JSON.stringify(keyboardLayout);
     
     return crypto.createHash('sha256').update(layoutString).digest('hex');
   }

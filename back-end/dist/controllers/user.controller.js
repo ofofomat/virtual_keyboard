@@ -28,11 +28,12 @@ let UserController = class UserController {
     async getUser(username) {
         return await this.userService.getUser(username);
     }
-    async login({ sessionId, username, passwordTyped }) {
+    async login({ sessionId, username, passwordTyped, hash }) {
         const response = await this.userService.login({
             sessionId: sessionId,
             username: username,
-            passwordTyped: passwordTyped
+            passwordTyped: passwordTyped,
+            hash: hash
         });
         if (response === null) {
             common_1.Logger.error(`Usuário não encontrado para dados fornecidos: ${username}, ${JSON.stringify(passwordTyped)}`);

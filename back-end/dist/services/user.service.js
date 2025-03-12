@@ -46,17 +46,15 @@ let UserService = UserService_1 = class UserService {
     async getUser(username) {
         return await this.userRepository.findOneBy({ username });
     }
-    async login({ sessionId, username, passwordTyped }) {
+    async login({ sessionId, username, passwordTyped, hash }) {
         try {
-            const isValid = await this.sessionService.validateLoginAttempt({ sessionId, passwordTyped });
+            const isValid = await this.sessionService.validateLoginAttempt({ sessionId, hash });
             if (!isValid)
                 return null;
             const user = await this.getUser(username);
-            common_1.Logger.debug(user);
             if (user === null)
                 return null;
             passwordTyped.forEach((val, i) => {
-                common_1.Logger.debug(`Comparing ${val} with ${user.password[i]}`);
                 if (!val.some(v => v === user.password[i])) {
                     throw new Error("Invalid password");
                 }

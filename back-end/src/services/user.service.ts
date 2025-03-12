@@ -37,18 +37,17 @@ export class UserService {
     return await this.userRepository.findOneBy({username});
   }
 
-  async login({sessionId, username, passwordTyped}: LoginUserDTO){
+  async login({sessionId, username, passwordTyped, hash}: LoginUserDTO){
     try {
-      const isValid = await this.sessionService.validateLoginAttempt({ sessionId, passwordTyped });
+      const isValid = await this.sessionService.validateLoginAttempt({ sessionId, hash });
       
       if (!isValid) return null;
       
       const user = await this.getUser(username); 
-      Logger.debug(user)
+
       if ( user === null ) return null;
       
       passwordTyped.forEach((val, i)=>{
-        Logger.debug(`Comparing ${val} with ${user.password[i]}`);
         if (!val.some(v => v === user.password[i])) {
           throw new Error("Invalid password");
         }

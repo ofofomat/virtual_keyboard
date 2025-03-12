@@ -9,6 +9,6 @@ export declare class SessionService {
         sessionId: string;
         keyboard: KeyboardDTO[];
     }>;
-    validateLoginAttempt({ sessionId, passwordTyped }: Partial<LoginUserDTO>): Promise<boolean | Error>;
+    validateLoginAttempt({ sessionId, hash }: Partial<LoginUserDTO>): Promise<boolean | Error>;
     invalidateSession(sessionId: string): Promise<void>;
 }

@@ -11,5 +11,5 @@ export declare class UserService {
     onModuleInit(): Promise<void>;
     createUser(createUserDto: CreateUserDto): Promise<User>;
     getUser(username: string): Promise<User | null>;
-    login({ sessionId, username, passwordTyped }: LoginUserDTO): Promise<User | null | undefined>;
+    login({ sessionId, username, passwordTyped, hash }: LoginUserDTO): Promise<User | null | undefined>;
 }

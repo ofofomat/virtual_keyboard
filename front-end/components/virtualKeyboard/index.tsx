@@ -4,6 +4,7 @@ import { EyeIcon, EyeOffIcon, Trash2 } from 'lucide-react';
 import { Card, CardBody, CardHeader } from '@heroui/card';
 import { Input } from '@heroui/input';
 import { Button } from '@heroui/button';
+import { generateKeyboardHash, revertKeyboardLayout } from '@/utils/funcs';
 
 export default function VirtualKeyboard() {
   const [isLoggingIn, setIsLoggingIn] = useState(false);
@@ -14,6 +15,7 @@ export default function VirtualKeyboard() {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [username, setUsername] = useState<string>('');
   const [name, setName] = useState<string>();
+  const [hash, setHash] = useState<string>();
   const hasFetched = useRef<boolean>(false);
 
   async function startSession(previousSessionId: string | null): Promise<{
@@ -36,7 +38,9 @@ export default function VirtualKeyboard() {
       const storedSessionId = localStorage.getItem("sessionId");
       console.log(storedSessionId);
       const { sessionId: newSessionId, keyboard } = await startSession(storedSessionId);
-
+      const values = revertKeyboardLayout(keyboard);
+      const newHash = await generateKeyboardHash(values);
+      setHash(newHash);
       setSessionId(newSessionId);
       setKeyboard(keyboard);
       localStorage.setItem("sessionId", newSessionId);
@@ -80,12 +84,16 @@ export default function VirtualKeyboard() {
         alert('Session not initialized.');
         return;
       }
+      if (!hash){
+        alert('Hash not initialized.');
+        return;
+      }
 
       const passwordTyped = selectedOptions;
       const response = await fetch('http://localhost:7575/users/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, sessionId, passwordTyped }),
+        body: JSON.stringify({ username, sessionId, passwordTyped, hash }),
       });
 
       if (!response.ok) {
@@ -102,6 +110,7 @@ export default function VirtualKeyboard() {
       await getSession();
     } finally {
       setIsLoggingIn(false);
+      setSelectedOptions([]);
     }
   }, [username, sessionId, selectedOptions, isLoggingIn]);
 

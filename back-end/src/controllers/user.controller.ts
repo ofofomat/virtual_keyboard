@@ -19,11 +19,12 @@ export class UserController {
   }
 
   @Post('login')
-  async login(@Body() { sessionId, username, passwordTyped }: LoginUserDTO): Promise<User|undefined> {
+  async login(@Body() { sessionId, username, passwordTyped, hash }: LoginUserDTO): Promise<User|undefined> {
     const response = await this.userService.login({
       sessionId: sessionId,
       username: username,
-      passwordTyped: passwordTyped
+      passwordTyped: passwordTyped,
+      hash: hash
     });
     
     if (response === null) {

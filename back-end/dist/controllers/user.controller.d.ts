@@ -7,5 +7,5 @@ export declare class UserController {
     constructor(userService: UserService);
     createUser(createUserDto: CreateUserDto): Promise<User>;
     getUser(username: string): Promise<User | null>;
-    login({ sessionId, username, passwordTyped }: LoginUserDTO): Promise<User | undefined>;
+    login({ sessionId, username, passwordTyped, hash }: LoginUserDTO): Promise<User | undefined>;
 }

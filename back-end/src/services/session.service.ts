@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Session } from 'src/entities';
@@ -37,18 +37,12 @@ export class SessionService {
     return { sessionId, keyboard };
   }
 
-  async validateLoginAttempt({ sessionId, passwordTyped }: Partial<LoginUserDTO>): Promise<boolean | Error> {
-    if (!passwordTyped) {
-      throw new Error("Senha não providenciada!");
-    }
-  
+  async validateLoginAttempt({ sessionId, hash }: Partial<LoginUserDTO>): Promise<boolean | Error> {
     const session = await this.sessionRepository.findOne({ where: { id: sessionId, is_active: true } });
     if (session == null) {
       throw new Error("ID de sessão inválida!");
     }
-    const receivedHash = generateKeyboardHash(passwordTyped);
-
-    return receivedHash === session.keyboard_hash;
+    return hash === session.keyboard_hash;
   }
 
   async invalidateSession(sessionId: string): Promise<void> {

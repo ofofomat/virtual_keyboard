@@ -16,8 +16,7 @@ function generateKeyboardLayout() {
     return keyboardLayout;
 }
 function generateKeyboardHash(keyboardLayout) {
-    const sortedLayout = keyboardLayout.map(pair => pair.sort((a, b) => a - b)).sort();
-    const layoutString = JSON.stringify(sortedLayout);
+    const layoutString = JSON.stringify(keyboardLayout);
     return crypto.createHash('sha256').update(layoutString).digest('hex');
 }
 //# sourceMappingURL=index.js.map

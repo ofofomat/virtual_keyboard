@@ -4,6 +4,7 @@ exports.LoginUserDTO = void 0;
 class LoginUserDTO {
     sessionId;
     username;
+    hash;
     passwordTyped;
 }
 exports.LoginUserDTO = LoginUserDTO;

@@ -41,16 +41,12 @@ let SessionService = class SessionService {
         }));
         return { sessionId, keyboard };
     }
-    async validateLoginAttempt({ sessionId, passwordTyped }) {
-        if (!passwordTyped) {
-            throw new Error("Senha não providenciada!");
-        }
+    async validateLoginAttempt({ sessionId, hash }) {
         const session = await this.sessionRepository.findOne({ where: { id: sessionId, is_active: true } });
         if (session == null) {
             throw new Error("ID de sessão inválida!");
         }
-        const receivedHash = (0, func_1.generateKeyboardHash)(passwordTyped);
-        return receivedHash === session.keyboard_hash;
+        return hash === session.keyboard_hash;
     }
     async invalidateSession(sessionId) {
         await this.sessionRepository.update(sessionId, { is_active: false });
