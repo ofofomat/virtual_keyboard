@@ -29,9 +29,13 @@ let UserController = class UserController {
         return await this.userService.getUser(username);
     }
     async login({ sessionId, username, passwordTyped }) {
-        const response = await this.userService.login({ sessionId, username, passwordTyped });
+        const response = await this.userService.login({
+            sessionId: sessionId,
+            username: username,
+            passwordTyped: passwordTyped
+        });
         if (response === null) {
-            common_1.Logger.error(`Usuário não encontrado para dados fornecidos: ${username}, ${passwordTyped}`);
+            common_1.Logger.error(`Usuário não encontrado para dados fornecidos: ${username}, ${JSON.stringify(passwordTyped)}`);
             throw new common_1.HttpException("Senhas não são iguais", common_1.HttpStatus.BAD_REQUEST);
         }
         return response;

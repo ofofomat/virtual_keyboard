@@ -20,10 +20,14 @@ export class UserController {
 
   @Post('login')
   async login(@Body() { sessionId, username, passwordTyped }: LoginUserDTO): Promise<User|undefined> {
-    const response = await this.userService.login({ sessionId, username, passwordTyped });
+    const response = await this.userService.login({
+      sessionId: sessionId,
+      username: username,
+      passwordTyped: passwordTyped
+    });
     
     if (response === null) {
-      Logger.error(`Usuário não encontrado para dados fornecidos: ${username}, ${passwordTyped}` );
+      Logger.error(`Usuário não encontrado para dados fornecidos: ${username}, ${JSON.stringify(passwordTyped)}` );
       throw new HttpException("Senhas não são iguais", HttpStatus.BAD_REQUEST);
     }
     

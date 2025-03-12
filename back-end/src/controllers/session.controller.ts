@@ -6,8 +6,8 @@ export class SessionController {
   constructor(private readonly sessionService: SessionService) {}
 
   @Post('start')
-  async startSession() {
-    return await this.sessionService.createSession();
+  async startSession(@Body ('previousSessionId') previousSessionId: string) {
+    return await this.sessionService.createSession(previousSessionId);
   }
 
   @Post('invalidate')

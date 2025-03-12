@@ -40,13 +40,15 @@ export class UserService {
   async login({sessionId, username, passwordTyped}: LoginUserDTO){
     try {
       const isValid = await this.sessionService.validateLoginAttempt({ sessionId, passwordTyped });
+      
       if (!isValid) return null;
       
       const user = await this.getUser(username); 
-
+      Logger.debug(user)
       if ( user === null ) return null;
-
+      
       passwordTyped.forEach((val, i)=>{
+        Logger.debug(`Comparing ${val} with ${user.password[i]}`);
         if (!val.some(v => v === user.password[i])) {
           throw new Error("Invalid password");
         }
